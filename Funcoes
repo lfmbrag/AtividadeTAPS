@@ -1,58 +1,58 @@
-	public boolean verificar(){
+	public boolean verificarCamposVazios(){ // -- ALTERAÇÃO DO NOME PARA MELHOR EXPLICAÇÃO DA FUNÇÃO
 		if(this.getFieldCPF().getText().equals("") || this.getFieldDataNasc().getText().equals("") || this.getFieldNome().getText().equals(""))
 		{
-			return false;
+			return false; // EXISTE CAMPO VAZIO
 		}
-		return true;
+		return true; // NENHUM CAMPO VAZIO
 	}
 	
-  if(e.getActionCommand().equals("Cadastrar"))
+	if(e.getActionCommand().equals("CadastrarPaciente")) // -- ALTERAÇÃO DO NOME PARA MELHOR EXPLICAÇÃO DA FUNÇÃO
 		{
-			//armazena as informações
-			if(this.jan.getTcad().verificar()){
-			String cpf= this.jan.getTcad().getFieldCPF().getText();
-			String nome = this.jan.getTcad().getFieldNome().getText();
-			String dataNasc = this.jan.getTcad().getFieldDataNasc().getText();
-			this.p = new Paciente(nome, cpf, dataNasc);
-			//adiciona o paciente na lista de pacientes
-			this.lp.adicionarIni(this.p);
-			System.out.println("Cadastro efetuado.");	
-			this.jan.getTcad().limpar();
-			this.lp.print();
+			//Armazena os dados do paciente na lista de pacientes para ser armazenado no banco de dados. -- melhor detalhamento do comentário.
+			if(this.jan.getTcad().verificarCamposVazios()){ // -- ALTERAÇÃO DO NOME PARA MELHOR EXPLICAÇÃO DA FUNÇÃO
+				String CPFDoPaciente = this.jan.getTcad().getFieldCPFdoPaciente).getText(); // -- ALTERAÇÃO DO NOME DA VARIÁVEL
+				String NomeDoPaciente = this.jan.getTcad().getFieldNomeDoPaciente().getText(); // -- ALTERAÇÃO DO NOME DA VARIÁVEL
+				String DataDeNascDoPaciente = this.jan.getTcad().getFieldDataDeNascDoPaciente().getText(); // -- ALTERAÇÃO DO NOME DA VARIÁVEL
+				this.dadosNovoPaciente = new DadosPaciente(nome, cpf, dataNasc); // -- ALTERAÇÃO DE P PARA DADOSNOVOPACIENTE E PACIENTE PARA DADOSPACIENTE
+				//Adiciona uma nova instãncia a lista de pacientes com os dados informados. -- REVISÃO DE COMENTÁRIO
+				this.listaPaciente.adicionarIni(this.dadosNovoPaciente); // -- ALTERAÇÃO DE LP PARA LISTA DE PACIENTES
+				System.out.println("Cadastro do paciente efetuado com sucesso.");	// -- ALTERAÇÃO DA MENSAGEM PARA MELHOR DETALHAMENTO DO QUE ACONTECEU
+				this.jan.getTcad().limparCampos(); // -- ALTERAÇÃO DO NOME PARA MELHOR EXPLICAÇÃO DA FUNÇÃO
+				this.lp.print();
 			}else {
-				System.out.println("Algum campo em branco, impossível cadastro.");
+				System.out.println("Algum campo em branco, preencha todos os campos e tente novamente."); // -- ADIÇÃO DE INSTRUÇÕES 
 			}
 		}
+		
     
-    	if(e.getActionCommand().equals("Gerar"))
-		{
-			//pega o cpf do fieldCpf e procura o paciente na lista de pacientes com este cpf
-			//se nenhum paciente com este cpf estiver na lista mostra a mensagem.
-			String cpf = this.jan.getTat().getFieldCPF().getText();
+    			String cpfDoPaciente = this.tela.getTelaAtendimento().getFieldCPF().getText(); // -- Alteração do nome da variável para melhor compreensão
 			try{
-				if(this.jan.getTat().verificar()){
-				Paciente p = this.lp.buscarNo(cpf).getP(); 
+				if(this.tela.getTelaAtendimento().verificarCamposVazios()){ // -- ALTERAÇÃO DO NOME PARA MELHOR EXPLICAÇÃO DA FUNÇÃO
+				Paciente instanciaPaciente = this.listaPaciente.buscarDadosPaciente(cpf).getDadosPaciente(); 
 
-				//armezena as informações de data e hora
-				String dataCheg = this.jan.getTat().getFieldDataCheg().getText();
-				String horaCheg = this.jan.getTat().getFieldHoraCheg().getText();
+				//Coleta os dados de data e hora do atendimento dos campos e armazena em variáveis. -- REFINAMENTO DA DESCRIÇÃO
+				String dataChegadaPaciente = this.tela.getTelaAtendimento().getFieldDataCheg().getText();
+				String horaChegadaPaciente = this.tela.getTat().getFieldHoraCheg().getText();
 				
 				//cria um atendimento e um nó de atendimento com as informações
-				Atendimento ate = new Atendimento(i, p, dataCheg, horaCheg);
-				NoAtendimento na = new NoAtendimento(ate);
+				Atendimento instanciaAtendimento = new Atendimento(contadorAtendimento, instanciaPaciente, dataChegadaPaciente, horaChegadaPaciente);
+				NovoAtendimento InstanciaNovoAtendimento = new NovoAtendimento(DadosAtendimentio);
 				
-				//enfileira na fila de atendimentos o atendimento
-				this.fa.enfileirar(ate);
+				//Adiciona os dados do novo atendimento a fila de atendimentos que será utilizada para chama-los depois. REFINAMENTO DA DESCRIÇÃO
+				this.filaAtendimentos.enfileirarAtendimento(DadosAtendimento)
 				
-				//limpa a tela e informa a senha do paciente
-				this.jan.getTat().limpar();
-				this.jan.getTat().getLabelSenha().setText("Senha: " + i);
+				//Limpar os campos da tela de atendimento e informar senha do atendimento. -- REFINAMENTO DA DESCRIÇÃO
+				this.tela.getTelaAtendimento().limparCampos(); // -- Alteração do nome da tela.
+				this.tela.getTelaAtendimento().getLabelSenha().setText("Senha: " + contadorAtendimento);
 				i++;}
 				else{
+				// Se algum campo estiver em branco, o atendimento não será gerado e a mensagem será mostrada.
 					System.out.println("Algum campo em branco, complete todos os campos para continuar.");
 				}
 				
 			} catch (NullPointerException p) {
-				System.out.println("Nenhum paciente cadastrado com este cpf.");
-				this.jan.getTat().limpar();
+				System.out.println("Nenhum paciente cadastrado com este CPF cadastrado no nosso banco, verifique se existe erro de preenchimento" +
+				"ou cadastre-o.");
+				this.tela.getTelaAtendimento().limparCampos();
 			}
+		}
