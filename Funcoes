@@ -1,0 +1,58 @@
+	public boolean verificar(){
+		if(this.getFieldCPF().getText().equals("") || this.getFieldDataNasc().getText().equals("") || this.getFieldNome().getText().equals(""))
+		{
+			return false;
+		}
+		return true;
+	}
+	
+  if(e.getActionCommand().equals("Cadastrar"))
+		{
+			//armazena as informações
+			if(this.jan.getTcad().verificar()){
+			String cpf= this.jan.getTcad().getFieldCPF().getText();
+			String nome = this.jan.getTcad().getFieldNome().getText();
+			String dataNasc = this.jan.getTcad().getFieldDataNasc().getText();
+			this.p = new Paciente(nome, cpf, dataNasc);
+			//adiciona o paciente na lista de pacientes
+			this.lp.adicionarIni(this.p);
+			System.out.println("Cadastro efetuado.");	
+			this.jan.getTcad().limpar();
+			this.lp.print();
+			}else {
+				System.out.println("Algum campo em branco, impossível cadastro.");
+			}
+		}
+    
+    	if(e.getActionCommand().equals("Gerar"))
+		{
+			//pega o cpf do fieldCpf e procura o paciente na lista de pacientes com este cpf
+			//se nenhum paciente com este cpf estiver na lista mostra a mensagem.
+			String cpf = this.jan.getTat().getFieldCPF().getText();
+			try{
+				if(this.jan.getTat().verificar()){
+				Paciente p = this.lp.buscarNo(cpf).getP(); 
+
+				//armezena as informações de data e hora
+				String dataCheg = this.jan.getTat().getFieldDataCheg().getText();
+				String horaCheg = this.jan.getTat().getFieldHoraCheg().getText();
+				
+				//cria um atendimento e um nó de atendimento com as informações
+				Atendimento ate = new Atendimento(i, p, dataCheg, horaCheg);
+				NoAtendimento na = new NoAtendimento(ate);
+				
+				//enfileira na fila de atendimentos o atendimento
+				this.fa.enfileirar(ate);
+				
+				//limpa a tela e informa a senha do paciente
+				this.jan.getTat().limpar();
+				this.jan.getTat().getLabelSenha().setText("Senha: " + i);
+				i++;}
+				else{
+					System.out.println("Algum campo em branco, complete todos os campos para continuar.");
+				}
+				
+			} catch (NullPointerException p) {
+				System.out.println("Nenhum paciente cadastrado com este cpf.");
+				this.jan.getTat().limpar();
+			}
